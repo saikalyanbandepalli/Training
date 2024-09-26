@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Kalyan@123
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Kalyan@123
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  springboot-app:
+    build: .
+    container_name: springboot-app
+    depends_on:
+      - mysql
+    ports:
+      - "8090:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/test
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Kalyan@123
+
+  react-app:
+        build: C:\Users\Bande\Desktop\Docker demo
+        container_name: react-frontend
+        ports:
+          - "3000:3000"
+        depends_on:
+          - springboot-app
+
+volumes:
+  mysql-data:
